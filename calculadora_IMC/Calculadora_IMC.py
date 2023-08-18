@@ -1,6 +1,6 @@
 "IMC = PESO(KG) / ALTURA(M²)"
 
-def calc_imc():
+def main():
     """Funcao MAIN,
     Coleta informacoes como: nome, peso e altura,
     calcula o IMC, faz sua classificacao e o registra
@@ -8,11 +8,9 @@ def calc_imc():
     try:
         print("** Calculadora de IMC **")
         nome = str(input("Digite o nome do avaliado: ")).title()
-        peso = float(input("Digite o peso em Quilos (ex:70): "))
-        altura = str(input("Digite a altura em Metros (ex:1.7): ")).replace(",", ".")
-        altura = float(altura)
-        imc = peso / altura**2
-        imc = f"{imc:.2f}"
+        peso = convert_str_float("Digite o peso em Quilos (ex:70.8): ")
+        altura = convert_str_float("Digite a altura em Metros (ex:1.7): ")
+        imc =  round(peso / altura**2, 2) 
         classificacao = classificacao_peso(imc)
         registro_imc(nome, imc, peso, altura, classificacao)
         print("")
@@ -23,14 +21,26 @@ def calc_imc():
     except:
         print("[ERROR] Ao tentar calcular IMC!")
 
+
+def convert_str_float(mensagem):
+    """
+    Funcao usada em main(),
+    Criada para evitar uma digitacao
+    errada, como ',' ao inves de '.'
+    """
+    try:
+        opc = str(input(f"{mensagem}")).replace(",", ".")
+        return float(opc)
+    except:
+        print("[ERROR] Ao tentar converter de string para float")
+
 def classificacao_peso(imc):
     # Endereco da tabela: "https://www.drrogermoura.com.br/images/artigos/tabela-imc.png"
     """
-    Funcao usada em calc_imc(), 
+    Funcao usada em main(), 
     intuido de fazer a classificacao de peso
     e retornar a clasfficacao dele
     """
-    imc = float(imc)
     if imc <= 18.5:
             resultado = "Abaixo do peso"
     elif 18.6 <= imc <=24.9:
@@ -60,7 +70,7 @@ def verif_arqui_result():
 
 def registro_imc(nome="Anonimo",imc=0,peso=0,altura=0,classificacao=None):
     """
-    Funcao usada em calc_imc(),
+    Funcao usada em main(),
     pega as informacoes como: nome, imc, peso, altura e classificacao e
     as registra no arquivo .txt
     """
@@ -72,5 +82,5 @@ def registro_imc(nome="Anonimo",imc=0,peso=0,altura=0,classificacao=None):
         print("[ERROR] Ao tentar registrar os dados (IMC) no arquivo 'resultados_IMC.txt' !")
 
 if __name__ == "__main__":
-    calc_imc()
+    main()
         
